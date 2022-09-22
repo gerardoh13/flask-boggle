@@ -3,14 +3,21 @@ const guessInput = document.getElementById("guessInput");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const playedList = document.getElementById("playedList");
 const flashUl = document.getElementById("flash");
+const timerDisplay = document.getElementById("timer")
+const newGameBtn = document.getElementById("newGame")
+const mainDiv = document.getElementById("main")
 let score = 0;
+let time = 60;
+let gameOver = true
+let timer;
 wordsPlayed = [];
 
 guessForm.addEventListener("submit", (e) => {
   e.preventDefault();
   let word = guessInput.value.toLowerCase();
-  if (word === ''){
-    return
+  if (word === "" || gameOver) {
+    guessForm.reset();
+    return;
   }
   checkIfValid(word);
   guessForm.reset();
@@ -34,8 +41,8 @@ async function handleResponse(valid, word) {
   }
   switch (valid) {
     case "not-on-board":
-        flashMsg(`${word} is not the board`);
-        break;
+      flashMsg(`${word} is not the board`);
+      break;
     case "not-word":
       flashMsg(`${word} is not a valid word`);
       break;
@@ -73,6 +80,65 @@ function flashMsg(msg) {
   newMsg.classList.toggle("dupe");
   flashUl.append(newMsg);
   setTimeout(() => {
-    flashUl.innerText = '';
+    flashUl.innerText = "";
   }, 1000);
 }
+
+function startStop() {
+  if (!timer) {
+    timer = accurateInterval(tick, 1000);
+  } else {
+    timer.cancel();
+    timer = "";
+  }
+}
+
+function clockify(time) {
+  let mins = Math.floor(time / 60);
+  let secs = time - mins * 60;
+  mins = mins < 10 ? "0" + mins : mins;
+  secs = secs < 10 ? "0" + secs : secs;
+  return `Time: ${mins}:${secs}`;
+}
+
+function tick() {
+  if (time === 0){
+    startStop()
+    gameOver = true
+    flashMsg("Game Over!")
+  } else {
+    time--;
+    let newTime = clockify(time);
+    timerDisplay.innerText = newTime;
+  }
+}
+
+// Thank you to AlexJWayne for an an accurate way to log time without drifting. https://gist.github.com/AlexJWayne/1431195
+// Slightly modified to accept 'normal' interval/timeout format (func, time).
+window.accurateInterval = function (fn, time) {
+  var cancel, nextAt, timeout, wrapper;
+  nextAt = new Date().getTime() + time;
+  timeout = null;
+  wrapper = function () {
+    nextAt += time;
+    timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+    return fn();
+  };
+  cancel = function () {
+    return clearTimeout(timeout);
+  };
+  timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+  return {
+    cancel: cancel,
+  };
+};
+
+newGameBtn.addEventListener("click", () => {
+  if (mainDiv.style.display === "none"){
+    console.log('good')
+    mainDiv.style.display = ""
+    gameOver = false
+    startStop()
+  }
+
+})

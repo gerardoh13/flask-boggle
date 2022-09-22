@@ -2,7 +2,7 @@
 content %}
 <h1 id="header">Boggle!</h1>
 <br />
-<div class="row main">
+<div class="row" id="main" style="display: none;">
   <div id="boardDiv" class="col-8">
     <table id="board">
       {% for row in board %}
@@ -13,7 +13,6 @@ content %}
       </tr>
       {% endfor %}
     </table>
-    <div id="guesses"></div>
     <br />
     <form id="guessForm">
       <div class="row">
@@ -35,10 +34,11 @@ content %}
     <ul id="flash"></ul>
   </div>
   <div class="col-4 pannel">
-    <h2>Time: 60s</h2>
+    <h2 id="timer">Time: 01:00</h2>
     <h2 id="scoreDisplay">Score: 0</h2>
     <ul id="playedList"></ul>
   </div>
 </div>
+<button id="newGame" class="btn btn-primary">Start Game</button>
 
 {% endblock %}
