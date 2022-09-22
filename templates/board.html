@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %} Boggle {% endblock %} {% block
+content %}
+<h1 id="header">Boggle!</h1>
+<br />
+<div class="row main">
+  <div id="boardDiv" class="col-8">
+    <table id="board">
+      {% for row in board %}
+      <tr>
+        {% for letter in row %}
+        <td>{{ letter }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    <div id="guesses"></div>
+    <br />
+    <form id="guessForm">
+      <div class="row">
+        <div class="col-xl-9 col-xs-12">
+          <input
+            type="text"
+            name="guess"
+            placeholder="Check Word"
+            id="guessInput"
+            class="form-control"
+          />
+        </div>
+        <div class="col-xl-3 col-xs-12">
+          <button class="btn btn-warning form-control">Check</button>
+        </div>
+      </div>
+    </form>
+    <br />
+    <ul id="flash"></ul>
+  </div>
+  <div class="col-4 pannel">
+    <h2>Time: 60s</h2>
+    <h2 id="scoreDisplay">Score: 0</h2>
+    <ul id="playedList"></ul>
+  </div>
+</div>
+
+{% endblock %}
