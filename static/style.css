@@ -4,6 +4,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 #boardDiv {
@@ -13,8 +14,9 @@ body {
 #boardDiv td {
   width: 6rem;
   height: 6rem;
-  color: white;
   font-size: x-large;
+  border: solid;
+  visibility: hidden;
 }
 
 #header {
@@ -33,17 +35,22 @@ button {
 input {
   min-height: 50px;
 }
-
+#stats {
+  width: 40%;
+  border: solid;
+}
 #main {
   width: 40%;
 }
 li {
-  color: white;
   font-size: x-large;
 }
-.pannel h2 {
+#pannel {
+  border: solid;
+  height: 100%;
+}
+#pannel h2 {
   text-align: left;
-  color: white;
 }
 #boardDiv li {
   color: red;

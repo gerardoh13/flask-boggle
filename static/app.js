@@ -3,12 +3,13 @@ const guessInput = document.getElementById("guessInput");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const playedList = document.getElementById("playedList");
 const flashUl = document.getElementById("flash");
-const timerDisplay = document.getElementById("timer")
-const newGameBtn = document.getElementById("newGame")
-const mainDiv = document.getElementById("main")
+const timerDisplay = document.getElementById("timer");
+const newGameBtn = document.getElementById("newGame");
+const mainDiv = document.getElementById("main");
+const highScoreDis = document.getElementById("highscore");
 let score = 0;
 let time = 60;
-let gameOver = true
+let gameOver = true;
 let timer;
 wordsPlayed = [];
 
@@ -102,10 +103,8 @@ function clockify(time) {
 }
 
 function tick() {
-  if (time === 0){
-    startStop()
-    gameOver = true
-    flashMsg("Game Over!")
+  if (time === 0) {
+    onGameOver();
   } else {
     time--;
     let newTime = clockify(time);
@@ -134,11 +133,36 @@ window.accurateInterval = function (fn, time) {
 };
 
 newGameBtn.addEventListener("click", () => {
-  if (mainDiv.style.display === "none"){
-    console.log('good')
-    mainDiv.style.display = ""
-    gameOver = false
-    startStop()
+  tds = Array.from(document.querySelectorAll("#boardDiv td"));
+  if (tds[0].style.visibility === "") {
+    for (let i = 0; i < tds.length; i++) {
+      tds[i].style.visibility = "visible";
+    }
+    gameOver = false;
+    guessInput.focus();
+    startStop();
+    newGameBtn.innerText = "New Game";
+  } else {
+    location.reload();
   }
+});
 
-})
+async function onGameOver() {
+  startStop();
+  gameOver = true;
+  flashMsg("Game Over!");
+  score = scoreDisplay.innerText.replace("Score: ", "");
+  const bodyFormData = new FormData();
+  bodyFormData.append("score", score);
+  const res = await axios({
+    url: "/game-over",
+    method: "POST",
+    data: bodyFormData,
+  });
+  if (res.data.newRecord) {
+    flashMsg("New High Score!");
+    highScoreDis.innerText = "High Score: score";
+  } else {
+    flashMsg("Better Luck Next Time!");
+  }
+}
