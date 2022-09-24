@@ -15,8 +15,10 @@ debug = DebugToolbarExtension(app)
 @app.route('/')
 def show_homepage():
     session['board'] = boggle_game.make_board()
+    highscore = session.get("highscore", 0)
+    nplays = session.get("nplays", 0)
     boggle_board = session['board']
-    return render_template('board.html', board=boggle_board)
+    return render_template('board.html', board=boggle_board, highscore=highscore, nplays=nplays)
 
 
 @app.route('/check-word', methods=['POST'])

@@ -2,8 +2,8 @@
 content %}
 <h1 id="header">Boggle!</h1>
 <div id="stats" class="row">
-  <p id="highscore" class="col">High Score: {{ session.highscore }}</p>
-  <p class="col"> Games Played: {{ session.nplays }}</p>
+  <p id="highscore" class="col">High Score: {{ highscore }}</p>
+  <p id="playsCount" class="col"> Games Played: {{ nplays }}</p>
   <button id="newGame" class="btn btn-primary col">Start Game</button>
 </div>
 <br />
@@ -39,7 +39,7 @@ content %}
     <ul id="flash"></ul>
   </div>
   <div id="pannel" class="col-xl-4 col-xs-12">
-    <h2 id="timer">Time: 01:00</h2>
+    <h1 id="timer">Time: 01:00</h1>
     <h2 id="scoreDisplay">Score: 0</h2>
     <ul id="playedList"></ul>
   </div>
