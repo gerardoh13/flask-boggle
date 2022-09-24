@@ -14,6 +14,7 @@ debug = DebugToolbarExtension(app)
 
 @app.route('/')
 def show_homepage():
+    """Shows homepage with a new board, and updated number of plays and high score."""
     session['board'] = boggle_game.make_board()
     highscore = session.get("highscore", 0)
     nplays = session.get("nplays", 0)
@@ -23,15 +24,16 @@ def show_homepage():
 
 @app.route('/check-word', methods=['POST'])
 def check_word():
+    """Checks if a guess is a valid english word, and wether it is on the board."""
     word = request.form['guess']
     board = session['board']
     valid = jsonify(result=boggle_game.check_valid_word(board, word))
-    print(valid)
     return valid
 
 
 @app.route('/game-over', methods=['POST'])
 def game_over():
+    """Updates the high score in session if needed, updates number of plays and returns wether the latest score is the new high score"""
     score = int(request.form['score'])
     highscore = session.get("highscore", 0)
     nplays = session.get("nplays", 0)
